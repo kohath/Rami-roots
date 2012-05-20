@@ -8,56 +8,107 @@ def form_roots(num=3, form=:root)
  	  	puts "%d: %s" % [num.next, form_root]
  		end
  	when :suffix
- 		num.times do |num|
- 			puts "%d: -%s" % [num.next, form_suffix]
- 		end
+ 		puts "Rami suffixes not yet implemented."
+ 		#num.times do |num|
+ 		#	puts "%d: -%s" % [num.next, form_suffix]
+ 		#end
  	else
  		puts "Didn't recognize argument \"#{form}\"."
  	end
 end
 
 def form_suffix(shape = nil, shape_two = nil)
-  root_shape, root_shape_two, root = shape || rand(100), shape_two || rand(100), ""
-  
-  # first syllable
-  root << second_medial_consonant if root_shape < 95
-  root << second_vowel if !root_shape.between?(55,95)
-  root << second_final_consonant if root_shape_two.between?(10, 25) && !root_shape.between?(55,95)
-  root << second_medial_consonant if root_shape_two < 10 && !root_shape.between?(55,95)
-  root << second_syllable if root_shape_two < 10 && !root_shape.between?(55,95)
+	# todo (or replace with whatever)
+end
+
+def form_root(shape = nil, shape_two = nil)  
+  root = ""
+  root << first_S_consonant if rand(100) < 25
+  root << first_C_consonant 
+	root << first_X_consonant if rand(100) < 50
+  root << tone 
+#  root << second_S_consonant if rand(100) < 25
+#  root << second_C_consonant
+#  root << second_X_consonant if rand(100) < 13
   root
 end
 
-def form_root(shape = nil, shape_two = nil)
-  root_shape, root_shape_two, root = shape || rand(100), shape_two || rand(100), ""
-  
-  # first syllable
-  root << first_consonant if root_shape < 75
-  root << first_vowel 
-  root << second_final_consonant if root_shape_two.between?(21, 88)
-  root << second_medial_consonant if root_shape_two < 21
-  root << second_syllable if root_shape_two < 21
-  root
+def tone
+	%w{+ -}.random
 end
 
-def first_consonant
+def first_X_consonant
+	# Possibilities: /p b t d ʈ ɖ c ɟ k g ʔ ɸ β v θ ð s ʃ ʂ ʐ ç ʝ x ɣ h ɮ l ɫ w ɻʷ j ɾ r/
+	consonant = {
+	  8 => %w{β l v w ð ʐ},
+	  7 => %w{p j ʝ ɣ},
+	  6 => %w{ʈ c t ɾ}, 
+	  5 => %w{ɸ θ k ʔ},
+	  4 => %w{ɮ s ɫ ʃ ʂ ç},
+	  3 => %w{b ɻʷ x h},
+	  2 => %w{ɖ d r}, 
+	  1 => %w{ɟ ɡ}
+	}
+	
+	chosen = rand 369 
+	case 
+	when chosen < 144 then consonant[8].random
+	when chosen < 233 then consonant[7].random
+	when chosen < 288 then consonant[6].random
+	when chosen < 322 then consonant[5].random
+	when chosen < 343 then consonant[4].random
+	when chosen < 356 then consonant[3].random
+	when chosen < 364 then consonant[2].random
+	else consonant[1].random
+	end
+end
+
+def first_C_consonant
+	# Possibilities: /m̥ m n̥ n ɳ̊ ɳ ɲ̊ ɲ ŋ̊ ŋ p b t d ʈ ɖ c ɟ k g ʔ ɸ β v θ ð s ʃ ʂ ʐ ç ʝ x ɣ h ɮ l ɫ w ɻʷ j ɾ r/
+	consonant = {
+	  9 => %w{β l v w ð ʐ},
+	  8 => %w{p j ʝ ɣ},
+	  7 => %w{m ʈ n c t ɾ}, 
+	  6 => %w{ɸ ɳ θ k ʔ},
+	  5 => %w{ɮ s ɫ ʃ ʂ ç ɲ ŋ},
+	  4 => %w{b ɻʷ x h},
+	  3 => %w{m̥ ɖ n̥ d r}, 
+	  2 => %w{ɳ̊ ɟ ɡ},
+		1 => %w{ɲ̊ ŋ̊}
+	}
+	
+	chosen = rand 372 
+	case 
+	when chosen < 144 then consonant[9].random
+	when chosen < 233 then consonant[8].random
+	when chosen < 288 then consonant[7].random
+	when chosen < 322 then consonant[6].random
+	when chosen < 343 then consonant[5].random
+	when chosen < 356 then consonant[4].random
+	when chosen < 364 then consonant[3].random
+	when chosen < 369 then consonant[2].random
+	else consonant[1].random
+	end
+end
+
+def first_S_consonant
+	# Possibilities: /ɾ ʔ h s v ʃ l ɮ r/
+	# ʔ > h v s > ɾ l > ɮ ʃ > r
   consonant = { 
-    6 => %w{t k s m n},
-    5 => %w{p b d g f l z μ ν},
-    4 => %w{i β δ γ λ ζ th kh tᴥ kᴥ mᴥ nᴥ},
-    3 => %w{x ι ¿ ph pᴥ bᴥ dᴥ gᴥ q},
-    2 => %w{μᴥ νᴥ ᴥ},
-    1 => %w{h βᴥ δᴥ γᴥ ϙ}
+    5 => %w{ʔ},
+    4 => %w{h v s},
+    3 => %w{ɾ l},
+    2 => %w{ɮ ʃ},
+    1 => %w{ɾ}
   }
   
-  chosen = rand 41
+  chosen = rand 81
   case 
-  when chosen < 4 then consonant[1].random
-  when chosen < 9 then consonant[2].random
-  when chosen < 15 then consonant[3].random
-  when chosen < 22 then consonant[4].random
-  when chosen < 31 then consonant[5].random
-  else consonant[6].random
+  when chosen < 34 then consonant[5].random
+  when chosen < 55 then consonant[4].random
+  when chosen < 68 then consonant[3].random
+  when chosen < 76 then consonant[2].random
+  else consonant[1].random
   end
 end
 
