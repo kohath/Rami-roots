@@ -1,32 +1,68 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
+# Post-creation modifications:
+# ɑ ɛ i u are the basic vowels, and can appear in closed syllables, others can't
+# æ > ɑ
+# ø > u
+# ɤ > ɑ
+# o > u
+# Consonant assimilation
+
 def form_roots(num=3, form=:root)
   case form
   when :root
 	  num.times do |num|
  	  	puts "%d: %s" % [num.next, form_root]
  		end
- 	when :suffix
- 		puts "Rami suffixes not yet implemented."
- 		#num.times do |num|
- 		#	puts "%d: -%s" % [num.next, form_suffix]
- 		#end
+ 	when :inflection
+	  num.times do |num|
+ 	  	puts "%d: %s" % [num.next, form_inflect]
+ 		end
  	else
  		puts "Didn't recognize argument \"#{form}\"."
  	end
 end
 
-def form_suffix(shape = nil, shape_two = nil)
-	# todo (or replace with whatever)
+def form_inflect
+  inflect = ""
+  num = rand(3)+1
+
+  num.times do
+    inflect << tone
+  end
+  
+  inflect
 end
 
 def form_root(shape = nil, shape_two = nil)  
   root = ""
-  root << first_S_consonant if rand(100) < 25
+  root << first_S_consonant if rand(100) < 10
   root << first_C_consonant 
-	root << first_X_consonant if rand(100) < 50
+	root << first_X_consonant if rand(100) < 35
+  root << first_vowel
   root << tone 
+  if rand(100) < 97
+    root << first_S_consonant if rand(100) < 10
+    root << first_C_consonant 
+  	root << first_X_consonant if rand(100) < 35
+    root << first_vowel
+    root << tone 
+    if rand(100) < 90
+      root << first_S_consonant if rand(100) < 10
+      root << first_C_consonant 
+     	root << first_X_consonant if rand(100) < 35
+      root << first_vowel
+      root << tone 
+      if rand(100) < 3
+        root << first_S_consonant if rand(100) < 10
+        root << first_C_consonant 
+       	root << first_X_consonant if rand(100) < 35
+        root << first_vowel
+        root << tone 
+      end
+    end
+  end
 #  root << second_S_consonant if rand(100) < 25
 #  root << second_C_consonant
 #  root << second_X_consonant if rand(100) < 13
@@ -114,20 +150,18 @@ end
 
 def first_vowel
   vowel = { 
-    5 => %w{i},
-    4 => %w{u ι},
-    3 => %w{a υ},
-    2 => %w{e α o η},
-    1 => %w{à ω ò ὰ ὼ h},
+    4 => %w{i ɑ u},
+    3 => %w{ɛ o},
+    2 => %w{æ ̃ɤ},
+    1 => %w{ø}
   }
 
   chosen = rand 39
   case 
-  when chosen < 5 then vowel[1].random
-  when chosen < 12 then vowel[2].random
-  when chosen < 20 then vowel[3].random
-  when chosen < 29 then vowel[4].random
-  else vowel[5].random
+  when chosen < 12 then vowel[1].random
+  when chosen < 20 then vowel[2].random
+  when chosen < 29 then vowel[3].random
+  else vowel[4].random
   end
 end
 
